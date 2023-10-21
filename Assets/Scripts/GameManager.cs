@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        PersistentData.timeSurvived = 0;
+    }
+
     private void Update()
     {
         timeSurvived += Time.deltaTime;
@@ -35,6 +41,8 @@ public class GameManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeSurvived % 60);
 
         survivalText.text = String.Format("{0:00}:{1:00}", minutes, seconds);
+
+        PersistentData.timeSurvived = timeSurvived;
     }
 
     public void IncrementBeesKilled()
@@ -48,11 +56,11 @@ public class GameManager : MonoBehaviour
 
         if (health < 0)
         {
-
+            SceneManager.LoadScene("DeathScene");
         }
         else
         {
-            heartsHolder.GetChild(health-1).gameObject.SetActive(false);
+            heartsHolder.GetChild(health).gameObject.SetActive(false);
         }
     }
 
