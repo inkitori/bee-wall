@@ -16,6 +16,15 @@ public class BeeSpawner : MonoBehaviour
     float lowerX = -80f;
     float upperX = 80f;
 
+    const float waveIntermission = 7f;
+
+    const float lowerBeeWait = 0.5f;
+    const float upperBeeWait = 1.5f;
+
+    const float maxSpawnTime = 8f;
+
+    int currentWave = 1;
+
     void Start()
     {
         StartCoroutine(BeeSpawningLoop());
@@ -25,11 +34,44 @@ public class BeeSpawner : MonoBehaviour
     {
         while (true)
         {
-            SpawnFromTop();
-            SpawnFromLeft();
+            Coroutine leftSpawner = StartCoroutine(nextWaveLeft());
+            Coroutine topSpawner = StartCoroutine(nextWaveTop());
 
-            yield return new WaitForSeconds(5);
+            yield return leftSpawner;
+            yield return topSpawner;
+
+            yield return new WaitForSeconds(waveIntermission);
+
+            currentWave++;
         }
+    }
+
+    IEnumerator nextWaveLeft()
+    {
+        int beeCount = CalculatedBeeCount(currentWave);
+        for (int i = 0; i < beeCount; i++)
+        {
+            SpawnFromLeft();
+            yield return new WaitForSeconds(Random.Range(lowerBeeWait, upperBeeWait));
+        }
+
+    }
+
+    IEnumerator nextWaveTop()
+    {
+        int beeCount = CalculatedBeeCount(currentWave);
+        for (int i = 0; i < beeCount; i++)
+        {
+            SpawnFromTop();
+            yield return new WaitForSeconds(Random.Range(lowerBeeWait, upperBeeWait));
+        }
+
+    }
+
+    int CalculatedBeeCount(int wave)
+    {
+        return Mathf.RoundToInt(Mathf.Log(wave + 1, 2)); 
+
     }
 
     void SpawnFromTop()

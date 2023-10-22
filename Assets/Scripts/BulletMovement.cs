@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletMovement : MonoBehaviour
 {
     public Vector2 direction;
-    [SerializeField] float bulletSpeed = 40f;
+    float bulletSpeed = 100f;
     Rigidbody2D rb;
     public Vector2 baseVelocity = Vector2.zero;
 

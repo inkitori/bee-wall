@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-    float bulletCooldown = 0.8f;
+    float bulletCooldown = 0.1f;
     float bulletClock = 0f;
     [SerializeField] Transform bulletPrefab;
     PlayerMovement playerMovement;
@@ -24,7 +23,7 @@ public class PlayerShooting : MonoBehaviour
         bulletClock += Time.deltaTime;
     
 
-        if (Input.GetKey("j") && bulletClock >= bulletCooldown)
+        if (Input.GetKeyDown("j") && bulletClock >= bulletCooldown)
 {
             BulletMovement bullet;
             Vector2 facing = playerMovement.GetFacingVector();
